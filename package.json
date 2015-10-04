@@ -1,0 +1,19 @@
+{
+  "name": "dom",
+  "version": "1.0.0",
+  "description": "Simple helper for working with the DOM",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/st32lth/dom.git"
+  },
+  "author": "st32lth <st32lth@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/st32lth/dom/issues"
+  },
+  "homepage": "https://github.com/st32lth/dom"
+}
