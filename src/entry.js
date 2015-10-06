@@ -1,5 +1,5 @@
-import ƒ from './domify';
-import {is, slice} from './utils';
+var ƒ = require('./domify');
+var {is, slice} = require('./utils');
 
 if (IS_DEV) {
   var hello = ƒ().make('div')

@@ -61,12 +61,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	*/
 	'use strict';
 
-	__webpack_require__(3); // for phantomjs
-	__webpack_require__(4);
+	__webpack_require__(5); // for phantomjs
+	__webpack_require__(6);
 
 	/* loads all the `.spec$|.test$` files in the src folder and all the sub directories */
 	/* also include the module exported from `src/module.js` */
-	var context = __webpack_require__(6);
+	var context = __webpack_require__(8);
 	context.keys().forEach(context);
 
 /***/ },
@@ -75,15 +75,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _utils = __webpack_require__(2);
-
 	var f = window.stampit;
-
-	var Base = f({
+	var dom = f({
 	  refs: {
 	    domNodes: []
 	  },
@@ -94,65 +87,54 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	});
 
-	var Query = f({
-	  methods: {
-	    get: function get(selector) {
-	      var idOrClass = /^#|^\./;
-	      var target = selector.replace(idOrClass, '');
-	      if (idOrClass.test(selector)) {
-	        var idMatch = document.getElementById(target);
-	        var classMatches = document.getElementsByClassName(target);
-	        this.domNodes = /^#/.test(selector) ? idMatch : _utils.slice.call(classMatches);
-	        return this;
-	      } else {
-	        this.domNodes = document.getElementsByTagName(selector);
-	        return this;
-	      }
-	    }
-	  }
-	});
-	var query = Query();
+	dom = __webpack_require__(2)(dom);
+	dom = __webpack_require__(4)(dom);
 
-	exports.query = query;
-	var Set = f({
-	  methods: {
-	    make: function make(node) {
-	      this.domNodes = document.createElement(node);
-	      return this;
-	    },
-	    inner: function inner(innerHtml) {
-	      if (this.domNodes.length) {
-	        _utils.slice.call(this.domNodes).forEach(function (n) {
-	          n.innerHTML = innerHtml;
-	        });
-	      } else {
-	        this.domNodes.innerHTML = innerHtml;
-	      }
-	      return this;
-	    }
-	  }
-	});
-	var set = Set();
-
-	exports.set = set;
-	var dom = f.compose(Base, Set, Query);
 	module.exports = dom;
 
 /***/ },
 /* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var f = window.stampit;
+
+	var _require = __webpack_require__(3);
+
+	var slice = _require.slice;
+
+	module.exports = function (plugin) {
+	  var Query = f({
+	    methods: {
+	      get: function get(selector) {
+	        var idOrClass = /^#|^\./;
+	        var target = selector.replace(idOrClass, '');
+	        if (idOrClass.test(selector)) {
+	          var idMatch = document.getElementById(target);
+	          var classMatches = document.getElementsByClassName(target);
+	          this.domNodes = /^#/.test(selector) ? idMatch : slice.call(classMatches);
+	          return this;
+	        } else {
+	          this.domNodes = document.getElementsByTagName(selector);
+	          return this;
+	        }
+	      }
+	    }
+	  });
+	  return f.compose(plugin, Query);
+	};
+
+/***/ },
+/* 3 */
 /***/ function(module, exports) {
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
 	var slice = Array.prototype.slice;
-	exports.slice = slice;
 	var is = function is(thing) {
 	  return thing !== undefined;
 	};
-	exports.is = is;
 	var request = function request(url, fn) {
 	  var req = new XMLHttpRequest();
 	  req.onreadystatechange = function (e) {
@@ -163,10 +145,45 @@ return /******/ (function(modules) { // webpackBootstrap
 	  req.open('get', url);
 	  req.send();
 	};
-	exports.request = request;
+
+	module.exports = { slice: slice, is: is, request: request };
 
 /***/ },
-/* 3 */
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var f = window.stampit;
+
+	var _require = __webpack_require__(3);
+
+	var slice = _require.slice;
+
+	module.exports = function (plugin) {
+	  var Set = f({
+	    methods: {
+	      make: function make(node) {
+	        this.domNodes = document.createElement(node);
+	        return this;
+	      },
+	      inner: function inner(innerHtml) {
+	        if (this.domNodes.length) {
+	          slice.call(this.domNodes).forEach(function (n) {
+	            n.innerHTML = innerHtml;
+	          });
+	        } else {
+	          this.domNodes.innerHTML = innerHtml;
+	        }
+	        return this;
+	      }
+	    }
+	  });
+	  return f.compose(plugin, Set);
+	};
+
+/***/ },
+/* 5 */
 /***/ function(module, exports) {
 
 	// Taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
@@ -195,15 +212,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 /***/ },
-/* 4 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {if(!global["window"]) global["window"] = {};
-	module.exports = global["window"]["stampit"] = __webpack_require__(5);
+	module.exports = global["window"]["stampit"] = __webpack_require__(7);
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 5 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*** IMPORTS FROM imports-loader ***/
@@ -2324,11 +2341,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	/***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/ /***/
 
 /***/ },
-/* 6 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./dom.test.coffee": 7
+		"./dom.test.coffee": 9
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -2341,11 +2358,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 6;
+	webpackContext.id = 8;
 
 
 /***/ },
-/* 7 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var dom;
