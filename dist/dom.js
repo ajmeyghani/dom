@@ -56,42 +56,35 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+	var ƒ = __webpack_require__(1);
 
-	var _domify = __webpack_require__(1);
+	var _require = __webpack_require__(2);
 
-	var _domify2 = _interopRequireDefault(_domify);
-
-	var _utils = __webpack_require__(2);
+	var is = _require.is;
+	var slice = _require.slice;
 
 	if (true) {
-	  var hello = (0, _domify2['default'])().make('div').inner('<h1>hello world </h1>').nodes();
+	  var hello = ƒ().make('div').inner('<h1>hello world </h1>').nodes();
 
-	  var body = (0, _domify2['default'])().get('body').nodes()[0];
+	  var body = ƒ().get('body').nodes()[0];
 	  body.appendChild(hello);
 
-	  (0, _domify2['default'])().get('#colors').nodes().addEventListener('click', function (e) {
-	    if ((0, _utils.is)(e.target.type)) {
-	      (0, _domify2['default'])().get('.number').nodes().forEach(function (node) {
+	  ƒ().get('#colors').nodes().addEventListener('click', function (e) {
+	    if (is(e.target.type)) {
+	      ƒ().get('.number').nodes().forEach(function (node) {
 	        node.style.color = e.target.getAttribute('data-color');
 	      });
 	    }
 	  });
 	}
 
-	module.exports = _domify2['default'];
+	module.exports = ƒ;
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _utils = __webpack_require__(2);
 
 	var f = window.stampit;
 
@@ -106,49 +99,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	});
 
-	var Query = f({
-	  methods: {
-	    get: function get(selector) {
-	      var idOrClass = /^#|^\./;
-	      var target = selector.replace(idOrClass, '');
-	      if (idOrClass.test(selector)) {
-	        var idMatch = document.getElementById(target);
-	        var classMatches = document.getElementsByClassName(target);
-	        this.domNodes = /^#/.test(selector) ? idMatch : _utils.slice.call(classMatches);
-	        return this;
-	      } else {
-	        this.domNodes = document.getElementsByTagName(selector);
-	        return this;
-	      }
-	    }
-	  }
-	});
-	var query = Query();
+	var Query = __webpack_require__(8);
+	var Set = __webpack_require__(9);
 
-	exports.query = query;
-	var Set = f({
-	  methods: {
-	    make: function make(node) {
-	      this.domNodes = document.createElement(node);
-	      return this;
-	    },
-	    inner: function inner(innerHtml) {
-	      if (this.domNodes.length) {
-	        _utils.slice.call(this.domNodes).forEach(function (n) {
-	          n.innerHTML = innerHtml;
-	        });
-	      } else {
-	        this.domNodes.innerHTML = innerHtml;
-	      }
-	      return this;
-	    }
-	  }
-	});
-	var set = Set();
-
-	exports.set = set;
-	var dom = f.compose(Base, Set, Query);
-	module.exports = dom;
+	module.exports = f.compose(Base, Set, Query);
 
 /***/ },
 /* 2 */
@@ -156,15 +110,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
 	var slice = Array.prototype.slice;
-	exports.slice = slice;
 	var is = function is(thing) {
 	  return thing !== undefined;
 	};
-	exports.is = is;
 	var request = function request(url, fn) {
 	  var req = new XMLHttpRequest();
 	  req.onreadystatechange = function (e) {
@@ -175,7 +124,72 @@ return /******/ (function(modules) { // webpackBootstrap
 	  req.open('get', url);
 	  req.send();
 	};
-	exports.request = request;
+
+	module.exports = { slice: slice, is: is, request: request };
+
+/***/ },
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var f = window.stampit;
+	var slice = __webpack_require__(2).slice;
+
+	var Query = f({
+	  methods: {
+	    get: function get(selector) {
+	      var idOrClass = /^#|^\./;
+	      var target = selector.replace(idOrClass, '');
+	      if (idOrClass.test(selector)) {
+	        var idMatch = document.getElementById(target);
+	        var classMatches = document.getElementsByClassName(target);
+	        this.domNodes = /^#/.test(selector) ? idMatch : slice.call(classMatches);
+	        return this;
+	      } else {
+	        this.domNodes = document.getElementsByTagName(selector);
+	        return this;
+	      }
+	    }
+	  }
+	});
+
+	module.exports = Query;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var f = window.stampit;
+	var slice = __webpack_require__(2).slice;
+
+	var Set = f({
+	  methods: {
+	    make: function make(node) {
+	      this.domNodes = document.createElement(node);
+	      return this;
+	    },
+	    inner: function inner(innerHtml) {
+	      if (this.domNodes.length) {
+	        slice.call(this.domNodes).forEach(function (n) {
+	          n.innerHTML = innerHtml;
+	        });
+	      } else {
+	        this.domNodes.innerHTML = innerHtml;
+	      }
+	      return this;
+	    }
+	  }
+	});
+
+	module.exports = Set;
 
 /***/ }
 /******/ ])

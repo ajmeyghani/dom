@@ -75,12 +75,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _utils = __webpack_require__(2);
-
 	var f = window.stampit;
 
 	var Base = f({
@@ -94,49 +88,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	});
 
-	var Query = f({
-	  methods: {
-	    get: function get(selector) {
-	      var idOrClass = /^#|^\./;
-	      var target = selector.replace(idOrClass, '');
-	      if (idOrClass.test(selector)) {
-	        var idMatch = document.getElementById(target);
-	        var classMatches = document.getElementsByClassName(target);
-	        this.domNodes = /^#/.test(selector) ? idMatch : _utils.slice.call(classMatches);
-	        return this;
-	      } else {
-	        this.domNodes = document.getElementsByTagName(selector);
-	        return this;
-	      }
-	    }
-	  }
-	});
-	var query = Query();
+	var Query = __webpack_require__(8);
+	var Set = __webpack_require__(9);
 
-	exports.query = query;
-	var Set = f({
-	  methods: {
-	    make: function make(node) {
-	      this.domNodes = document.createElement(node);
-	      return this;
-	    },
-	    inner: function inner(innerHtml) {
-	      if (this.domNodes.length) {
-	        _utils.slice.call(this.domNodes).forEach(function (n) {
-	          n.innerHTML = innerHtml;
-	        });
-	      } else {
-	        this.domNodes.innerHTML = innerHtml;
-	      }
-	      return this;
-	    }
-	  }
-	});
-	var set = Set();
-
-	exports.set = set;
-	var dom = f.compose(Base, Set, Query);
-	module.exports = dom;
+	module.exports = f.compose(Base, Set, Query);
 
 /***/ },
 /* 2 */
@@ -144,15 +99,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
 	var slice = Array.prototype.slice;
-	exports.slice = slice;
 	var is = function is(thing) {
 	  return thing !== undefined;
 	};
-	exports.is = is;
 	var request = function request(url, fn) {
 	  var req = new XMLHttpRequest();
 	  req.onreadystatechange = function (e) {
@@ -163,7 +113,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  req.open('get', url);
 	  req.send();
 	};
-	exports.request = request;
+
+	module.exports = { slice: slice, is: is, request: request };
 
 /***/ },
 /* 3 */
@@ -2389,6 +2340,65 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	});
 
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var f = window.stampit;
+	var slice = __webpack_require__(2).slice;
+
+	var Query = f({
+	  methods: {
+	    get: function get(selector) {
+	      var idOrClass = /^#|^\./;
+	      var target = selector.replace(idOrClass, '');
+	      if (idOrClass.test(selector)) {
+	        var idMatch = document.getElementById(target);
+	        var classMatches = document.getElementsByClassName(target);
+	        this.domNodes = /^#/.test(selector) ? idMatch : slice.call(classMatches);
+	        return this;
+	      } else {
+	        this.domNodes = document.getElementsByTagName(selector);
+	        return this;
+	      }
+	    }
+	  }
+	});
+
+	module.exports = Query;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var f = window.stampit;
+	var slice = __webpack_require__(2).slice;
+
+	var Set = f({
+	  methods: {
+	    make: function make(node) {
+	      this.domNodes = document.createElement(node);
+	      return this;
+	    },
+	    inner: function inner(innerHtml) {
+	      if (this.domNodes.length) {
+	        slice.call(this.domNodes).forEach(function (n) {
+	          n.innerHTML = innerHtml;
+	        });
+	      } else {
+	        this.domNodes.innerHTML = innerHtml;
+	      }
+	      return this;
+	    }
+	  }
+	});
+
+	module.exports = Set;
 
 /***/ }
 /******/ ])
