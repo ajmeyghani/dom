@@ -1,4 +1,4 @@
-dom = require('../src/domify')
+dom = require('../src/dom')
 
 describe 'Get method', ->
 

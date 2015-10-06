@@ -1,4 +1,4 @@
-var ƒ = require('./domify');
+var ƒ = require('./dom');
 var {is, slice} = require('./utils');
 
 if (IS_DEV) {
