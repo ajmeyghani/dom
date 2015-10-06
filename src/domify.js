@@ -1,4 +1,5 @@
 var f = window.stampit;
+var dom;
 
 var Base = f({
   refs: {
@@ -11,7 +12,8 @@ var Base = f({
   }
 });
 
-var dom = require('./query')(Base);
+dom = Base;
+dom = require('./query')(dom);
 dom = require('./set')(dom);
 
 module.exports = dom;
