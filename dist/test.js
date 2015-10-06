@@ -110,15 +110,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      get: function get(selector) {
 	        var idOrClass = /^#|^\./;
 	        var target = selector.replace(idOrClass, '');
-	        if (idOrClass.test(selector)) {
-	          var idMatch = document.getElementById(target);
-	          var classMatches = document.getElementsByClassName(target);
-	          this.domNodes = /^#/.test(selector) ? idMatch : slice.call(classMatches);
-	          return this;
-	        } else {
-	          this.domNodes = document.getElementsByTagName(selector);
-	          return this;
-	        }
+	        this.domNodes = idOrClass.test(selector) ? /^#/.test(selector) ? document.getElementById(target) : slice.call(document.getElementsByClassName(target)) : document.getElementsByTagName(selector);
+	        return this;
 	      }
 	    }
 	  });
