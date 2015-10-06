@@ -58,7 +58,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var ƒ = __webpack_require__(1);
 
-	var _require = __webpack_require__(2);
+	var _require = __webpack_require__(3);
 
 	var is = _require.is;
 	var slice = _require.slice;
@@ -87,9 +87,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var f = window.stampit;
-	var dom;
-
-	var Base = f({
+	var dom = f({
 	  refs: {
 	    domNodes: []
 	  },
@@ -100,49 +98,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	});
 
-	dom = Base;
-	dom = __webpack_require__(8)(dom);
-	dom = __webpack_require__(9)(dom);
+	dom = __webpack_require__(2)(dom);
+	dom = __webpack_require__(4)(dom);
 
 	module.exports = dom;
 
 /***/ },
 /* 2 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var slice = Array.prototype.slice;
-	var is = function is(thing) {
-	  return thing !== undefined;
-	};
-	var request = function request(url, fn) {
-	  var req = new XMLHttpRequest();
-	  req.onreadystatechange = function (e) {
-	    if (req.readyState === 4) {
-	      fn(req.responseText);
-	    }
-	  };
-	  req.open('get', url);
-	  req.send();
-	};
-
-	module.exports = { slice: slice, is: is, request: request };
-
-/***/ },
-/* 3 */,
-/* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var f = window.stampit;
 
-	var _require = __webpack_require__(2);
+	var _require = __webpack_require__(3);
 
 	var slice = _require.slice;
 
@@ -168,14 +137,37 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 /***/ },
-/* 9 */
+/* 3 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var slice = Array.prototype.slice;
+	var is = function is(thing) {
+	  return thing !== undefined;
+	};
+	var request = function request(url, fn) {
+	  var req = new XMLHttpRequest();
+	  req.onreadystatechange = function (e) {
+	    if (req.readyState === 4) {
+	      fn(req.responseText);
+	    }
+	  };
+	  req.open('get', url);
+	  req.send();
+	};
+
+	module.exports = { slice: slice, is: is, request: request };
+
+/***/ },
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var f = window.stampit;
 
-	var _require = __webpack_require__(2);
+	var _require = __webpack_require__(3);
 
 	var slice = _require.slice;
 

@@ -1,7 +1,5 @@
 var f = window.stampit;
-var dom;
-
-var Base = f({
+var dom = f({
   refs: {
     domNodes: []
   },
@@ -12,7 +10,6 @@ var Base = f({
   }
 });
 
-dom = Base;
 dom = require('./query')(dom);
 dom = require('./set')(dom);
 
