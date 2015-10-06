@@ -11,7 +11,7 @@ var Base = f({
   }
 });
 
-var Query = require('./query');
-var Set = require('./set');
+var dom = require('./query')(Base);
+dom = require('./set')(dom);
 
-module.exports = f.compose(Base, Set, Query);
+module.exports = dom;

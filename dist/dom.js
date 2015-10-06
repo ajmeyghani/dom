@@ -58,7 +58,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var ƒ = __webpack_require__(1);
 
-	var _require = __webpack_require__(2);
+	var _require = __webpack_require__(3);
 
 	var is = _require.is;
 	var slice = _require.slice;
@@ -99,13 +99,46 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	});
 
-	var Query = __webpack_require__(8);
-	var Set = __webpack_require__(9);
+	var dom = __webpack_require__(2)(Base);
+	dom = __webpack_require__(4)(dom);
 
-	module.exports = f.compose(Base, Set, Query);
+	module.exports = dom;
 
 /***/ },
 /* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var f = window.stampit;
+
+	var _require = __webpack_require__(3);
+
+	var slice = _require.slice;
+
+	module.exports = function (plugin) {
+	  var Query = f({
+	    methods: {
+	      get: function get(selector) {
+	        var idOrClass = /^#|^\./;
+	        var target = selector.replace(idOrClass, '');
+	        if (idOrClass.test(selector)) {
+	          var idMatch = document.getElementById(target);
+	          var classMatches = document.getElementsByClassName(target);
+	          this.domNodes = /^#/.test(selector) ? idMatch : slice.call(classMatches);
+	          return this;
+	        } else {
+	          this.domNodes = document.getElementsByTagName(selector);
+	          return this;
+	        }
+	      }
+	    }
+	  });
+	  return f.compose(plugin, Query);
+	};
+
+/***/ },
+/* 3 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -128,68 +161,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = { slice: slice, is: is, request: request };
 
 /***/ },
-/* 3 */,
-/* 4 */,
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var f = window.stampit;
-	var slice = __webpack_require__(2).slice;
 
-	var Query = f({
-	  methods: {
-	    get: function get(selector) {
-	      var idOrClass = /^#|^\./;
-	      var target = selector.replace(idOrClass, '');
-	      if (idOrClass.test(selector)) {
-	        var idMatch = document.getElementById(target);
-	        var classMatches = document.getElementsByClassName(target);
-	        this.domNodes = /^#/.test(selector) ? idMatch : slice.call(classMatches);
+	var _require = __webpack_require__(3);
+
+	var slice = _require.slice;
+
+	module.exports = function (plugin) {
+	  var Set = f({
+	    methods: {
+	      make: function make(node) {
+	        this.domNodes = document.createElement(node);
 	        return this;
-	      } else {
-	        this.domNodes = document.getElementsByTagName(selector);
+	      },
+	      inner: function inner(innerHtml) {
+	        if (this.domNodes.length) {
+	          slice.call(this.domNodes).forEach(function (n) {
+	            n.innerHTML = innerHtml;
+	          });
+	        } else {
+	          this.domNodes.innerHTML = innerHtml;
+	        }
 	        return this;
 	      }
 	    }
-	  }
-	});
-
-	module.exports = Query;
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var f = window.stampit;
-	var slice = __webpack_require__(2).slice;
-
-	var Set = f({
-	  methods: {
-	    make: function make(node) {
-	      this.domNodes = document.createElement(node);
-	      return this;
-	    },
-	    inner: function inner(innerHtml) {
-	      if (this.domNodes.length) {
-	        slice.call(this.domNodes).forEach(function (n) {
-	          n.innerHTML = innerHtml;
-	        });
-	      } else {
-	        this.domNodes.innerHTML = innerHtml;
-	      }
-	      return this;
-	    }
-	  }
-	});
-
-	module.exports = Set;
+	  });
+	  return f.compose(plugin, Set);
+	};
 
 /***/ }
 /******/ ])
