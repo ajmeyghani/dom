@@ -19,12 +19,7 @@ module.exports = plugin => {
       addClass(klass) {
         var nodes = this.domNodes.length ? this.nodes() : [this.nodes()];
         nodes.forEach(function (node) {
-          if (node.classList) {
-            node.classList.add(klass);
-          }
-          else {
-            node.className += ' ' + klass;
-          }
+          node.className += (node.className === '' ? '' : ' ') + klass;
         });
         return this;
       }

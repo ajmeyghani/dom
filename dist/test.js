@@ -118,11 +118,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (el.length) {
 	          throw new Error('Can only check for a single node.');
 	        } else {
-	          if (el.classList) {
-	            return el.classList.contains(klass);
-	          } else {
-	            return new RegExp('(^| )' + klass + '( |$)', 'gi').test(el.klass);
-	          }
+	          return el.className.search(klass) !== -1;
 	        }
 	      }
 	    }
@@ -187,11 +183,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      addClass: function addClass(klass) {
 	        var nodes = this.domNodes.length ? this.nodes() : [this.nodes()];
 	        nodes.forEach(function (node) {
-	          if (node.classList) {
-	            node.classList.add(klass);
-	          } else {
-	            node.className += ' ' + klass;
-	          }
+	          node.className += (node.className === '' ? '' : ' ') + klass;
 	        });
 	        return this;
 	      }

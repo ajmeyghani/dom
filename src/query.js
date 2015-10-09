@@ -18,11 +18,7 @@ module.exports = plugin => {
         if (el.length) {
           throw new Error('Can only check for a single node.');
         } else {
-          if (el.classList) {
-           return el.classList.contains(klass);
-          } else {
-           return new RegExp('(^| )' + klass + '( |$)', 'gi').test(el.klass);
-          }
+          return el.className.search (klass) !== -1;
         }
 
       }
