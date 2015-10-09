@@ -112,15 +112,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var target = selector.replace(idOrClass, '');
 	        this.domNodes = idOrClass.test(selector) ? /^#/.test(selector) ? document.getElementById(target) : slice.call(document.getElementsByClassName(target)) : document.getElementsByTagName(selector);
 	        return this;
+	      },
+	      hasClass: function hasClass(klass) {
+	        var el = this.nodes();
+	        if (el.length) {
+	          throw new Error('Can only check for a single node.');
+	        } else {
+	          if (el.classList) {
+	            return el.classList.contains(klass);
+	          } else {
+	            return new RegExp('(^| )' + klass + '( |$)', 'gi').test(el.klass);
+	          }
+	        }
 	      }
 	    }
 	  });
-	  // hasClass(klass) {
-	  //   if (el.classList)
-	  //     el.classList.contains(className);
-	  //   else
-	  //     new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
-	  // }
 	  return f.compose(plugin, Query);
 	};
 
@@ -170,7 +176,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      },
 	      inner: function inner(innerHtml) {
 	        if (this.domNodes.length) {
-	          slice.call(this.domNodes).forEach(function (n) {
+	          this.nodes().forEach(function (n) {
 	            n.innerHTML = innerHtml;
 	          });
 	        } else {
@@ -179,12 +185,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return this;
 	      },
 	      addClass: function addClass(klass) {
-	        var el = this.domNodes;
-	        if (el.classList) {
-	          el.classList.add(klass);
-	        } else {
-	          el.klass += ' ' + klass;
-	        }
+	        var nodes = this.domNodes.length ? this.nodes() : [this.nodes()];
+	        nodes.forEach(function (node) {
+	          if (node.classList) {
+	            node.classList.add(klass);
+	          } else {
+	            node.className += ' ' + klass;
+	          }
+	        });
 	        return this;
 	      }
 
@@ -2423,10 +2431,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    div = dom().make('div').addClass('newclass').nodes();
 	    expect(div.className).toBe('newclass');
 	    elms = dom().get('.elm').addClass('extra').nodes();
-	    doAllHaveClass = elms.some(function(elm) {
-	      return elm.className !== 'extra';
+	    doAllHaveClass = void 0;
+	    elms.forEach(function(elm) {
+	      if (elm.className.search('extra') === -1) {
+	        return doAllHaveClass = false;
+	      } else {
+	        return doAllHaveClass = true;
+	      }
 	    });
 	    return expect(doAllHaveClass).toBe(true);
+	  });
+	});
+
+	describe('has class', function() {
+	  return it('should check if the given element has a class', function() {
+	    var div, isClass;
+	    div = dom().make('div').addClass('newclass');
+	    isClass = div.hasClass('newclass');
+	    return expect(isClass).toBe(true);
 	  });
 	});
 

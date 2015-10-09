@@ -13,12 +13,19 @@ module.exports = plugin => {
         : document.getElementsByTagName(selector);
         return this;
       },
-      // hasClass(klass) {
-      //   if (el.classList)
-      //     el.classList.contains(className);
-      //   else
-      //     new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
-      // }
+      hasClass(klass) {
+        var el = this.nodes();
+        if (el.length) {
+          throw new Error('Can only check for a single node.');
+        } else {
+          if (el.classList) {
+           return el.classList.contains(klass);
+          } else {
+           return new RegExp('(^| )' + klass + '( |$)', 'gi').test(el.klass);
+          }
+        }
+
+      }
     }
   });
   return f.compose(plugin, Query);

@@ -35,6 +35,20 @@ describe 'add class method', ->
     div = dom().make('div').addClass('newclass').nodes()
     expect(div.className).toBe 'newclass'
     elms = dom().get('.elm').addClass('extra').nodes()
-    doAllHaveClass = elms.some (elm) ->
-      return elm.className != 'extra'
+
+    doAllHaveClass = undefined
+    elms.forEach (elm) ->
+      if elm.className.search('extra') == -1
+        doAllHaveClass = false
+       else
+        doAllHaveClass = true
+
     expect(doAllHaveClass).toBe true
+
+describe 'has class', ->
+
+  it 'should check if the given element has a class', ->
+    div = dom().make('div').addClass('newclass');
+    isClass = div.hasClass('newclass')
+    expect(isClass).toBe true
+

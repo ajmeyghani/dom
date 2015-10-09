@@ -10,22 +10,22 @@ module.exports = plugin => {
       },
       inner(innerHtml) {
         if (this.domNodes.length) {
-          slice.call(this.domNodes).forEach(function (n) {
-            n.innerHTML = innerHtml
-          });
+          this.nodes().forEach(function (n) { n.innerHTML = innerHtml });
         } else {
           this.domNodes.innerHTML = innerHtml;
         }
         return this;
       },
       addClass(klass) {
-        var el = this.domNodes;
-        if (el.classList) {
-          el.classList.add(klass);
-        }
-        else {
-          el.klass += ' ' + klass;
-        }
+        var nodes = this.domNodes.length ? this.nodes() : [this.nodes()];
+        nodes.forEach(function (node) {
+          if (node.classList) {
+            node.classList.add(klass);
+          }
+          else {
+            node.className += ' ' + klass;
+          }
+        });
         return this;
       }
 
