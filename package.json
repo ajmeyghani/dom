@@ -1,6 +1,6 @@
 {
   "name": "dom",
-  "version": "1.0.0",
+  "version": "0.5.0",
   "description": "Simple helper for working with the DOM",
   "main": "entry.js",
   "scripts": {

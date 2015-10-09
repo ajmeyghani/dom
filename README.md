@@ -11,24 +11,43 @@ Simple helper for working with the DOM
 - iOS >= 4
 - Android >= 2.3
 
-## Usage
+## API
 
-**NOTE**: Methods are chainable.
+Almost all methods all chainable.
 
-- Make a node: `dom().make('div');`
-- Set `innerHTML`: `dom().make('div').inner('<p> ... </p>');`
-- Get element by tag, class or id (select by css selector _**not**_ included)
+### `make`
 
-    ```
+Make an html node: `dom().make('div');`
+
+### `inner`
+
+Set the of an node `innerHTML`: `dom().make('div').inner('<p> ... </p>');`
+
+### `get`
+
+Get element by tag, class or id (select by css selector _**not**_ included)
+
     dom().get('body');
     dom().get('.someclass');
     dom().get('#someid');
-    ```
+
+### `addClass`
+
+Adds class to element(s): `dom().make('div').addClass('newclass')`
+
+### `hasClass`
+
+Checks if the given element has the given class:
+
+    dom().make('div').addClass('newclass').hasClass('newclass');
+
+### `nodes`
+
 In all cases, use the `nodes` method to get the raw node/nodes:
 
-    `dom().make('div').inner('<p> something </p>').nodes()`
+    dom().make('div').inner('<p> something </p>').nodes()
 
-    `dom().get('body').nodes()[0]`
+    dom().get('body').nodes()[0]
 
 ## Extending by Plugins
 
