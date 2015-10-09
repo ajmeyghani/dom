@@ -115,6 +115,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  });
+	  // hasClass(klass) {
+	  //   if (el.classList)
+	  //     el.classList.contains(className);
+	  //   else
+	  //     new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
+	  // }
 	  return f.compose(plugin, Query);
 	};
 
@@ -171,7 +177,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	          this.domNodes.innerHTML = innerHtml;
 	        }
 	        return this;
+	      },
+	      addClass: function addClass(klass) {
+	        var el = this.domNodes;
+	        if (el.classList) {
+	          el.classList.add(klass);
+	        } else {
+	          el.klass += ' ' + klass;
+	        }
+	        return this;
 	      }
+
 	    }
 	  });
 	  return f.compose(plugin, Set);
@@ -2398,6 +2414,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    expect(div.hasChildNodes()).toBe(true);
 	    makeTest = dom().get('#make-test').nodes();
 	    return makeTest.appendChild(div);
+	  });
+	});
+
+	describe('add class method', function() {
+	  return it('should add class to the given node', function() {
+	    var div, doAllHaveClass, elms;
+	    div = dom().make('div').addClass('newclass').nodes();
+	    expect(div.className).toBe('newclass');
+	    elms = dom().get('.elm').addClass('extra').nodes();
+	    doAllHaveClass = elms.some(function(elm) {
+	      return elm.className !== 'extra';
+	    });
+	    return expect(doAllHaveClass).toBe(true);
 	  });
 	});
 

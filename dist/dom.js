@@ -126,6 +126,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	  });
+	  // hasClass(klass) {
+	  //   if (el.classList)
+	  //     el.classList.contains(className);
+	  //   else
+	  //     new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
+	  // }
 	  return f.compose(plugin, Query);
 	};
 
@@ -182,7 +188,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	          this.domNodes.innerHTML = innerHtml;
 	        }
 	        return this;
+	      },
+	      addClass: function addClass(klass) {
+	        var el = this.domNodes;
+	        if (el.classList) {
+	          el.classList.add(klass);
+	        } else {
+	          el.klass += ' ' + klass;
+	        }
+	        return this;
 	      }
+
 	    }
 	  });
 	  return f.compose(plugin, Set);

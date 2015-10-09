@@ -12,7 +12,13 @@ module.exports = plugin => {
           slice.call(document.getElementsByClassName(target))
         : document.getElementsByTagName(selector);
         return this;
-      }
+      },
+      // hasClass(klass) {
+      //   if (el.classList)
+      //     el.classList.contains(className);
+      //   else
+      //     new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
+      // }
     }
   });
   return f.compose(plugin, Query);

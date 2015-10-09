@@ -17,7 +17,18 @@ module.exports = plugin => {
           this.domNodes.innerHTML = innerHtml;
         }
         return this;
+      },
+      addClass(klass) {
+        var el = this.domNodes;
+        if (el.classList) {
+          el.classList.add(klass);
+        }
+        else {
+          el.klass += ' ' + klass;
+        }
+        return this;
       }
+
     }
   });
   return f.compose(plugin, Set);
