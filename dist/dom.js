@@ -123,6 +123,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var target = selector.replace(idOrClass, '');
 	        this.domNodes = idOrClass.test(selector) ? /^#/.test(selector) ? document.getElementById(target) : slice.call(document.getElementsByClassName(target)) : document.getElementsByTagName(selector);
 	        return this;
+	      },
+	      hasClass: function hasClass(klass) {
+	        var el = this.nodes();
+	        if (el.length) {
+	          throw new Error('Can only check for a single node.');
+	        } else {
+	          return el.className.search(klass) !== -1;
+	        }
 	      }
 	    }
 	  });
@@ -175,14 +183,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	      },
 	      inner: function inner(innerHtml) {
 	        if (this.domNodes.length) {
-	          slice.call(this.domNodes).forEach(function (n) {
+	          this.nodes().forEach(function (n) {
 	            n.innerHTML = innerHtml;
 	          });
 	        } else {
 	          this.domNodes.innerHTML = innerHtml;
 	        }
 	        return this;
+	      },
+	      addClass: function addClass(klass) {
+	        var nodes = this.domNodes.length ? this.nodes() : [this.nodes()];
+	        nodes.forEach(function (node) {
+	          node.className += (node.className === '' ? '' : ' ') + klass;
+	        });
+	        return this;
 	      }
+
 	    }
 	  });
 	  return f.compose(plugin, Set);

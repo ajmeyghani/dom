@@ -12,6 +12,15 @@ module.exports = plugin => {
           slice.call(document.getElementsByClassName(target))
         : document.getElementsByTagName(selector);
         return this;
+      },
+      hasClass(klass) {
+        var el = this.nodes();
+        if (el.length) {
+          throw new Error('Can only check for a single node.');
+        } else {
+          return el.className.search (klass) !== -1;
+        }
+
       }
     }
   });

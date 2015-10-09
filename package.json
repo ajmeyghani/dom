@@ -4,6 +4,7 @@
   "description": "Simple helper for working with the DOM",
   "main": "entry.js",
   "scripts": {
+    "start": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "tdd": "node_modules/testem/testem.js",
     "test": "node_modules/testem/testem.js ci -P 5",
     "dev": "npm run webpack -- -w",

@@ -112,6 +112,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var target = selector.replace(idOrClass, '');
 	        this.domNodes = idOrClass.test(selector) ? /^#/.test(selector) ? document.getElementById(target) : slice.call(document.getElementsByClassName(target)) : document.getElementsByTagName(selector);
 	        return this;
+	      },
+	      hasClass: function hasClass(klass) {
+	        var el = this.nodes();
+	        if (el.length) {
+	          throw new Error('Can only check for a single node.');
+	        } else {
+	          return el.className.search(klass) !== -1;
+	        }
 	      }
 	    }
 	  });
@@ -164,14 +172,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	      },
 	      inner: function inner(innerHtml) {
 	        if (this.domNodes.length) {
-	          slice.call(this.domNodes).forEach(function (n) {
+	          this.nodes().forEach(function (n) {
 	            n.innerHTML = innerHtml;
 	          });
 	        } else {
 	          this.domNodes.innerHTML = innerHtml;
 	        }
 	        return this;
+	      },
+	      addClass: function addClass(klass) {
+	        var nodes = this.domNodes.length ? this.nodes() : [this.nodes()];
+	        nodes.forEach(function (node) {
+	          node.className += (node.className === '' ? '' : ' ') + klass;
+	        });
+	        return this;
 	      }
+
 	    }
 	  });
 	  return f.compose(plugin, Set);
@@ -2398,6 +2414,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	    expect(div.hasChildNodes()).toBe(true);
 	    makeTest = dom().get('#make-test').nodes();
 	    return makeTest.appendChild(div);
+	  });
+	});
+
+	describe('add class method', function() {
+	  return it('should add class to the given node', function() {
+	    var div, doAllHaveClass, elms;
+	    div = dom().make('div').addClass('newclass').nodes();
+	    expect(div.className).toBe('newclass');
+	    elms = dom().get('.elm').addClass('extra').nodes();
+	    doAllHaveClass = elms.map(function(elm) {
+	      return elm.className.search('extra') !== -1;
+	    }).reduce((function(a, b) {
+	      return a && b;
+	    }), true);
+	    return expect(doAllHaveClass).toBe(true);
+	  });
+	});
+
+	describe('has class', function() {
+	  return it('should check if the given element has a class', function() {
+	    var div, isClass;
+	    div = dom().make('div').addClass('newclass');
+	    isClass = div.hasClass('newclass');
+	    return expect(isClass).toBe(true);
 	  });
 	});
 

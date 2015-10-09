@@ -10,14 +10,20 @@ module.exports = plugin => {
       },
       inner(innerHtml) {
         if (this.domNodes.length) {
-          slice.call(this.domNodes).forEach(function (n) {
-            n.innerHTML = innerHtml
-          });
+          this.nodes().forEach(function (n) { n.innerHTML = innerHtml });
         } else {
           this.domNodes.innerHTML = innerHtml;
         }
         return this;
+      },
+      addClass(klass) {
+        var nodes = this.domNodes.length ? this.nodes() : [this.nodes()];
+        nodes.forEach(function (node) {
+          node.className += (node.className === '' ? '' : ' ') + klass;
+        });
+        return this;
       }
+
     }
   });
   return f.compose(plugin, Set);

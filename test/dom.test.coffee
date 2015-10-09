@@ -28,3 +28,22 @@ describe 'inner method', ->
     expect(div.hasChildNodes()).toBe true
     makeTest = dom().get('#make-test').nodes()
     makeTest.appendChild div
+
+describe 'add class method', ->
+
+  it 'should add class to the given node', ->
+    div = dom().make('div').addClass('newclass').nodes()
+    expect(div.className).toBe 'newclass'
+
+    elms = dom().get('.elm').addClass('extra').nodes()
+    doAllHaveClass = elms.map (elm) -> elm.className.search('extra') != -1
+    .reduce(((a, b) -> a and b ), true)
+    expect(doAllHaveClass).toBe true
+
+describe 'has class', ->
+
+  it 'should check if the given element has a class', ->
+    div = dom().make('div').addClass('newclass');
+    isClass = div.hasClass('newclass')
+    expect(isClass).toBe true
+
