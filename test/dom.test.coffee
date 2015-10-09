@@ -34,15 +34,10 @@ describe 'add class method', ->
   it 'should add class to the given node', ->
     div = dom().make('div').addClass('newclass').nodes()
     expect(div.className).toBe 'newclass'
+
     elms = dom().get('.elm').addClass('extra').nodes()
-
-    doAllHaveClass = undefined
-    elms.forEach (elm) ->
-      if elm.className.search('extra') == -1
-        doAllHaveClass = false
-       else
-        doAllHaveClass = true
-
+    doAllHaveClass = elms.map (elm) -> elm.className.search('extra') != -1
+    .reduce(((a, b) -> a and b ), true)
     expect(doAllHaveClass).toBe true
 
 describe 'has class', ->

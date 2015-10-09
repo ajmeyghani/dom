@@ -2431,14 +2431,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    div = dom().make('div').addClass('newclass').nodes();
 	    expect(div.className).toBe('newclass');
 	    elms = dom().get('.elm').addClass('extra').nodes();
-	    doAllHaveClass = void 0;
-	    elms.forEach(function(elm) {
-	      if (elm.className.search('extra') === -1) {
-	        return doAllHaveClass = false;
-	      } else {
-	        return doAllHaveClass = true;
-	      }
-	    });
+	    doAllHaveClass = elms.map(function(elm) {
+	      return elm.className.search('extra') !== -1;
+	    }).reduce((function(a, b) {
+	      return a && b;
+	    }), true);
 	    return expect(doAllHaveClass).toBe(true);
 	  });
 	});
