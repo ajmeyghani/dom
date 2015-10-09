@@ -27,6 +27,7 @@
     "coffee-script": "^1.10.0",
     "expose-loader": "^0.7.0",
     "express": "^4.13.3",
+    "foreman": "^1.4.1",
     "imports-loader": "^0.6.4",
     "polyfill-function-prototype-bind": "0.0.1",
     "script-loader": "^0.6.1",
