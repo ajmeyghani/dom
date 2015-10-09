@@ -1,6 +1,16 @@
 # DOM ![image](https://travis-ci.org/st32lth/dom.svg?branch=master)
 Simple helper for working with the DOM
 
+## Compatibilities
+
+- IE >= 9
+- Firefox >= 10
+- Safari >= 5
+- Chrome >= 14
+- Opera >= 15
+- iOS >= 4
+- Android >= 2.3
+
 ## Usage
 
 **NOTE**: Methods are chainable.
@@ -17,6 +27,7 @@ Simple helper for working with the DOM
 In all cases, use the `nodes` method to get the raw node/nodes:
 
     `dom().make('div').inner('<p> something </p>').nodes()`
+
     `dom().get('body').nodes()[0]`
 
 ## Extending by Plugins

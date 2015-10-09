@@ -110,15 +110,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      get: function get(selector) {
 	        var idOrClass = /^#|^\./;
 	        var target = selector.replace(idOrClass, '');
-	        if (idOrClass.test(selector)) {
-	          var idMatch = document.getElementById(target);
-	          var classMatches = document.getElementsByClassName(target);
-	          this.domNodes = /^#/.test(selector) ? idMatch : slice.call(classMatches);
-	          return this;
-	        } else {
-	          this.domNodes = document.getElementsByTagName(selector);
-	          return this;
-	        }
+	        this.domNodes = idOrClass.test(selector) ? /^#/.test(selector) ? document.getElementById(target) : slice.call(document.getElementsByClassName(target)) : document.getElementsByTagName(selector);
+	        return this;
 	      }
 	    }
 	  });
@@ -129,22 +122,24 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 3 */
 /***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	var slice = Array.prototype.slice;
 	var is = function is(thing) {
 	  return thing !== undefined;
 	};
-	var request = function request(url, fn) {
-	  var req = new XMLHttpRequest();
-	  req.onreadystatechange = function (e) {
-	    if (req.readyState === 4) {
-	      fn(req.responseText);
-	    }
+	var request = (function () {
+	  var xhr = new XMLHttpRequest();
+	  return function (method, url, callback) {
+	    xhr.onreadystatechange = function () {
+	      if (xhr.readyState === 4) {
+	        callback(xhr.responseText);
+	      }
+	    };
+	    xhr.open(method, url);
+	    xhr.send();
 	  };
-	  req.open('get', url);
-	  req.send();
-	};
+	})();
 
 	module.exports = { slice: slice, is: is, request: request };
 
