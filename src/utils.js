@@ -1,5 +1,5 @@
 var slice = Array.prototype.slice;
-var is = function (thing) { return thing !== undefined; };
+var is = thing => { return thing !== undefined; };
 var request = function () {
   var xhr = new XMLHttpRequest();
   return function( method, url, callback ) {
