@@ -33,7 +33,12 @@ Get element by tag, class or id (select by css selector _**not**_ included)
 
 ### `addClass`
 
-Adds class to element(s): `dom().make('div').addClass('newclass')`
+- Adds class to element(s): `dom().make('div').addClass('newclass')`
+- Add multiple classes: `dom().make('div').addClass('some more class')`
+
+### `removeClass`
+
+Remove class(es) from element(s): `dom().get('#someElement').removeClass('toRevmoe')`
 
 ### `hasClass`
 
