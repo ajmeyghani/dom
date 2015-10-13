@@ -164,15 +164,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	var f = window.stampit;
-
-	var _require = __webpack_require__(3);
-
-	var slice = _require.slice;
 
 	module.exports = function (plugin) {
 	  var Set = f({
@@ -194,7 +190,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	      addClass: function addClass(klass) {
 	        var nodes = this.domNodes.length ? this.nodes() : [this.nodes()];
 	        nodes.forEach(function (node) {
-	          node.className += (node.className === '' ? '' : ' ') + klass;
+	          node.className = klass.split(/[ ]+/).filter(function (className) {
+	            return className !== "";
+	          }).join(' ');
+	        });
+	        return this;
+	      },
+	      removeClass: function removeClass(klass) {
+	        var nodes = this.domNodes.length ? this.nodes() : [this.nodes()];
+	        nodes.forEach(function (node) {
+	          node.className = node.className.split(/[ ]+/).filter(function (className) {
+	            return className !== "";
+	          }).filter(function (className) {
+	            return className !== klass;
+	          }).join(' ');
 	        });
 	        return this;
 	      }

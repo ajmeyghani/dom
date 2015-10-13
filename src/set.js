@@ -1,5 +1,4 @@
 var f = window.stampit;
-var {slice} = require('./utils');
 
 module.exports = plugin => {
   var Set = f({
@@ -19,7 +18,19 @@ module.exports = plugin => {
       addClass(klass) {
         var nodes = this.domNodes.length ? this.nodes() : [this.nodes()];
         nodes.forEach(function (node) {
-          node.className += (node.className === '' ? '' : ' ') + klass;
+          node.className = klass.split(/[ ]+/)
+              .filter(className => { return className !== ""; })
+              .join(' ')
+        });
+        return this;
+      },
+      removeClass(klass) {
+        var nodes = this.domNodes.length ? this.nodes() : [this.nodes()];
+        nodes.forEach(function (node) {
+          node.className = node.className.split(/[ ]+/)
+              .filter(className => { return className !== ""; } )
+              .filter(className => { return className !== klass; })
+              .join(' ');
         });
         return this;
       }

@@ -153,15 +153,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	var f = window.stampit;
-
-	var _require = __webpack_require__(3);
-
-	var slice = _require.slice;
 
 	module.exports = function (plugin) {
 	  var Set = f({
@@ -183,7 +179,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	      addClass: function addClass(klass) {
 	        var nodes = this.domNodes.length ? this.nodes() : [this.nodes()];
 	        nodes.forEach(function (node) {
-	          node.className += (node.className === '' ? '' : ' ') + klass;
+	          node.className = klass.split(/[ ]+/).filter(function (className) {
+	            return className !== "";
+	          }).join(' ');
+	        });
+	        return this;
+	      },
+	      removeClass: function removeClass(klass) {
+	        var nodes = this.domNodes.length ? this.nodes() : [this.nodes()];
+	        nodes.forEach(function (node) {
+	          node.className = node.className.split(/[ ]+/).filter(function (className) {
+	            return className !== "";
+	          }).filter(function (className) {
+	            return className !== klass;
+	          }).join(' ');
 	        });
 	        return this;
 	      }
@@ -2422,6 +2431,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var div, doAllHaveClass, elms;
 	    div = dom().make('div').addClass('newclass').nodes();
 	    expect(div.className).toBe('newclass');
+	    div = dom().make('div').addClass('  badname   morespace   someotherclass newclass   ').nodes();
+	    expect(div.className).toBe('badname morespace someotherclass newclass');
 	    elms = dom().get('.elm').addClass('extra').nodes();
 	    doAllHaveClass = elms.map(function(elm) {
 	      return elm.className.search('extra') !== -1;
@@ -2438,6 +2449,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	    div = dom().make('div').addClass('newclass');
 	    isClass = div.hasClass('newclass');
 	    return expect(isClass).toBe(true);
+	  });
+	});
+
+	describe('remove class', function() {
+	  return it('should remove the given class from the list of classes on the element.', function() {
+	    var div;
+	    div = dom().make('div').addClass('someclass newclass otherlcass');
+	    div.removeClass('newclass');
+	    expect(div.nodes().className).toBe('someclass otherlcass');
+	    div = dom().make('div').addClass('   random   badname   someclass');
+	    div.removeClass('random');
+	    return expect(div.nodes().className).toBe('badname someclass');
 	  });
 	});
 

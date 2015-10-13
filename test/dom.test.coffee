@@ -35,6 +35,9 @@ describe 'add class method', ->
     div = dom().make('div').addClass('newclass').nodes()
     expect(div.className).toBe 'newclass'
 
+    div = dom().make('div').addClass('  badname   morespace   someotherclass newclass   ').nodes()
+    expect(div.className).toBe 'badname morespace someotherclass newclass'
+
     elms = dom().get('.elm').addClass('extra').nodes()
     doAllHaveClass = elms.map (elm) -> elm.className.search('extra') != -1
     .reduce(((a, b) -> a and b ), true)
@@ -46,4 +49,16 @@ describe 'has class', ->
     div = dom().make('div').addClass('newclass');
     isClass = div.hasClass('newclass')
     expect(isClass).toBe true
+
+describe 'remove class', ->
+
+  it 'should remove the given class from the list of classes on the element.', ->
+    div = dom().make('div').addClass('someclass newclass otherlcass');
+    div.removeClass('newclass');
+    expect(div.nodes().className).toBe 'someclass otherlcass'
+
+    div = dom().make('div').addClass('   random   badname   someclass');
+    div.removeClass('random');
+    expect(div.nodes().className).toBe 'badname someclass'
+
 
