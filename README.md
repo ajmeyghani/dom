@@ -13,7 +13,7 @@ Simple helper for working with the DOM
 
 ## API
 
-**All methods are chainable except those that return values**
+**All methods are chainable except those that terminate.
 
 ### `dom`
 
@@ -106,9 +106,12 @@ window.dom = f.compose(dom, plugin);
 ## Development
 
 Install node
+
 `node server`
+
 `npm run dev -s`
-`npm test`
+
+`npm run tdd -s`
 
 ## Build
 
