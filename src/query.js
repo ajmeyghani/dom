@@ -20,8 +20,8 @@ module.exports = plugin => {
         } else {
           return el.className.search (klass) !== -1;
         }
-
-      }
+      },
+      parent() { return dom(this.domNodes.parentNode); }
     }
   });
   return f.compose(plugin, Query);

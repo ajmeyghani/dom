@@ -1,4 +1,35 @@
 dom = require('../src/dom')
+window.dom = dom
+
+describe 'Constructor', ->
+  it 'should create dom element(s)', ->
+    body = dom('body').nodes()
+    expect(body.nodeName.toLowerCase()).toBe 'body'
+
+  it 'should create dom instances from DOM element names', ->
+    elms = dom (['div', 'span'])
+    expect(elms[0].nodes().nodeName).toBe('DIV')
+    expect(elms[1].nodes().nodeName).toBe('SPAN')
+
+  it 'should wrap a single DOM node', ->
+    someNode = dom('div').nodes()
+    instance = dom(someNode)
+    expect(instance.nodes().nodeName).toBe 'DIV'
+
+  it 'should wrap an array of DOM nodes', ->
+    div1 = dom('div').nodes()
+    p1 = dom('p').nodes()
+
+    elms = [div1, p1]
+    doms = dom(elms)
+
+    expect(doms[0].nodes().nodeName).toBe('DIV')
+    expect(doms[1].nodes().nodeName).toBe('P')
+
+describe 'Parent method', ->
+  it 'should wrap parent node', ->
+    parent = dom().get('#child1').parent()
+    expect(parent.nodes().nodeName).toBe 'DIV'
 
 describe 'Get method', ->
 
@@ -60,5 +91,3 @@ describe 'remove class', ->
     div = dom().make('div').addClass('   random   badname   someclass');
     div.removeClass('random');
     expect(div.nodes().className).toBe 'badname someclass'
-
-

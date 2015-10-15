@@ -33,3 +33,17 @@ p, span, i {
 .case {
   margin-bottom: 15px;
 }
+.test-cases, .jasmine_html-reporter {
+  float: left;
+}
+.test-cases {
+  margin-right: 30px;
+  border-right: 1px solid #ccc;
+  padding-right: 30px;
+  padding-left: 19px;
+  height: 100vh;
+}
+
+body {
+  background-color: #eeeeee;
+}

@@ -13,11 +13,21 @@ Simple helper for working with the DOM
 
 ## API
 
-Almost all methods all chainable.
+**All methods are chainable except those that return values**
+
+### `dom`
+
+The `dom` constructor can:
+
+- wrap DOM node name: `dom('div')` -> `Dom instance`
+- array of DOM node names: `dom(['div', 'p'])` -> `array of Dom instances`
+- a DOM node: `dom(document.createElement('div'))` -> `Dom instance`
+- an array of DOM nodes: `dom([document.createElement('div'), document.createElement('p')])` -> `array of Dom instances`
+
 
 ### `make`
 
-Make an html node: `dom().make('div');`
+Make an html node: `dom().make('div');` Equivallent to `dom('div')`
 
 ### `inner`
 
@@ -30,6 +40,13 @@ Get element by tag, class or id (select by css selector _**not**_ included)
     dom().get('body');
     dom().get('.someclass');
     dom().get('#someid');
+
+### `parent`
+
+Gets the parent element wrapped in a Dom instance
+
+    var parent = dom().get('#child1').parent();
+    expect(parent.nodes().nodeName).toBe('DIV)'
 
 ### `addClass`
 

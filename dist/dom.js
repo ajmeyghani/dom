@@ -58,7 +58,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var ƒ = __webpack_require__(1);
 
-	var _require = __webpack_require__(3);
+	var _require = __webpack_require__(2);
 
 	var is = _require.is;
 	var slice = _require.slice;
@@ -87,31 +87,92 @@ return /******/ (function(modules) { // webpackBootstrap
 	'use strict';
 
 	var f = window.stampit;
+
+	var _require = __webpack_require__(2);
+
+	var is = _require.is;
+	var isArray = _require.isArray;
+
 	var dom = f({
+	  init: function init(self) {
+	    var arg = self.args[0];
+	    var instance = self.instance;
+	  },
 	  refs: {
 	    domNodes: []
 	  },
 	  methods: {
 	    nodes: function nodes() {
 	      return this.domNodes;
+	    },
+	    setNodes: function setNodes(nodes) {
+	      this.domNodes = nodes;
 	    }
 	  }
 	});
 
-	dom = __webpack_require__(2)(dom);
+	var domFactory = function domFactory(arg) {
+	  if (is(arg)) {
+	    if (arg.nodeName) {
+	      var d = dom();
+	      d.setNodes(arg);
+	      return d;
+	    } else if (isArray(arg)) {
+	      var nodes = arg;
+	      return nodes.map(function (n) {
+	        var d = dom();n.nodeName ? d.setNodes(n) : d.make(n);return d;
+	      });
+	    } else if (typeof arg === 'string') {
+	      return dom().make(arg);
+	    } else {
+	      throw new Error('Not valid arguments. Arguments can be either a DOM node or the name of an HTML element');
+	    }
+	  }
+	  return dom(null, arg);
+	};
+
+	dom = __webpack_require__(3)(dom);
 	dom = __webpack_require__(4)(dom);
 
-	module.exports = dom;
+	module.exports = domFactory;
 
 /***/ },
 /* 2 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	var slice = Array.prototype.slice;
+	var isArray = function isArray(arg) {
+	  return Object.prototype.toString.call(arg) === "[object Array]";
+	};
+	var is = function is(thing) {
+	  return thing !== undefined;
+	};
+	var request = (function () {
+	  var xhr = new XMLHttpRequest();
+	  return function (method, url, callback) {
+	    xhr.onreadystatechange = function () {
+	      if (xhr.readyState === 4) {
+	        callback(xhr.responseText);
+	      }
+	    };
+	    xhr.open(method, url);
+	    xhr.send();
+	  };
+	})();
+
+	module.exports = { slice: slice, is: is, request: request, isArray: isArray };
+
+/***/ },
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var f = window.stampit;
 
-	var _require = __webpack_require__(3);
+	var _require = __webpack_require__(2);
 
 	var slice = _require.slice;
 
@@ -131,36 +192,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        } else {
 	          return el.className.search(klass) !== -1;
 	        }
+	      },
+	      parent: function parent() {
+	        return dom(this.domNodes.parentNode);
 	      }
 	    }
 	  });
 	  return f.compose(plugin, Query);
 	};
-
-/***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	var slice = Array.prototype.slice;
-	var is = function is(thing) {
-	  return thing !== undefined;
-	};
-	var request = (function () {
-	  var xhr = new XMLHttpRequest();
-	  return function (method, url, callback) {
-	    xhr.onreadystatechange = function () {
-	      if (xhr.readyState === 4) {
-	        callback(xhr.responseText);
-	      }
-	    };
-	    xhr.open(method, url);
-	    xhr.send();
-	  };
-	})();
-
-	module.exports = { slice: slice, is: is, request: request };
 
 /***/ },
 /* 4 */
