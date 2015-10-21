@@ -13,7 +13,7 @@ Simple helper for working with the DOM
 
 ## API
 
-**All methods are chainable except those that terminate.
+**All methods are chainable except those that terminate.** The methods that are not chainable, are denoted with a `*`.
 
 ### `dom`
 
@@ -56,14 +56,17 @@ Gets the parent element wrapped in a Dom instance
 ### `removeClass`
 
 Remove class(es) from element(s): `dom().get('#someElement').removeClass('toRevmoe')`
+You can also remove multiple classes:
 
-### `hasClass`
+  `dom().get('#elm').removeClass('first second third')`
+
+### `hasClass*`
 
 Checks if the given element has the given class:
 
     dom().make('div').addClass('newclass').hasClass('newclass');
 
-### `nodes`
+### `nodes*`
 
 In all cases, use the `nodes` method to get the raw node/nodes:
 
