@@ -18,7 +18,8 @@ module.exports = plugin => {
       addClass(klass) {
         var nodes = this.domNodes.length ? this.nodes() : [this.nodes()];
         nodes.forEach(function (node) {
-          node.className = klass.split(/[ ]+/)
+          var initialClasses = node.className.split(' ');
+          node.className =  initialClasses.concat(klass.split(/[ ]+/))
               .filter(className => { return className !== ""; })
               .join(' ')
         });
@@ -27,10 +28,13 @@ module.exports = plugin => {
       removeClass(klass) {
         var nodes = this.domNodes.length ? this.nodes() : [this.nodes()];
         nodes.forEach(function (node) {
-          node.className = node.className.split(/[ ]+/)
-              .filter(className => { return className !== ""; } )
-              .filter(className => { return className !== klass; })
-              .join(' ');
+          var nodeClasses = node.className.split(' ');
+          var klasses = klass.split(' ');
+          klasses.forEach(function (name, idx) {
+            var position = nodeClasses.indexOf(name);
+            if (position !== -1) { nodeClasses.splice(position, 1); }
+          });
+          node.className = nodeClasses.join(' ');
         });
         return this;
       }

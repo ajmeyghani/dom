@@ -74,6 +74,11 @@ describe 'add class method', ->
     .reduce(((a, b) -> a and b ), true)
     expect(doAllHaveClass).toBe true
 
+  it 'should add class to the existing classes', ->
+    div = dom('div').addClass('init')
+    div.addClass('else more')
+    expect(div.nodes().className).toBe 'init else more'
+
 describe 'has class', ->
 
   it 'should check if the given element has a class', ->
@@ -91,3 +96,12 @@ describe 'remove class', ->
     div = dom().make('div').addClass('   random   badname   someclass');
     div.removeClass('random');
     expect(div.nodes().className).toBe 'badname someclass'
+
+    div = dom().make('div').addClass('   first   second   third');
+    div.removeClass('first second');
+    expect(div.nodes().className).toBe 'third'
+
+    elms = dom().get('.rmx').removeClass('rmx').nodes()
+    doAllHaveClass = elms.map (elm) -> elm.className.search('rmx') != -1
+    .reduce(((a, b) -> a and b ), true)
+    expect(doAllHaveClass).toBe false

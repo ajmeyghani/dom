@@ -194,7 +194,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 4 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	var f = window.stampit;
 
@@ -218,7 +218,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	      addClass: function addClass(klass) {
 	        var nodes = this.domNodes.length ? this.nodes() : [this.nodes()];
 	        nodes.forEach(function (node) {
-	          node.className = klass.split(/[ ]+/).filter(function (className) {
+	          var initialClasses = node.className.split(' ');
+	          node.className = initialClasses.concat(klass.split(/[ ]+/)).filter(function (className) {
 	            return className !== "";
 	          }).join(' ');
 	        });
@@ -227,11 +228,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	      removeClass: function removeClass(klass) {
 	        var nodes = this.domNodes.length ? this.nodes() : [this.nodes()];
 	        nodes.forEach(function (node) {
-	          node.className = node.className.split(/[ ]+/).filter(function (className) {
-	            return className !== "";
-	          }).filter(function (className) {
-	            return className !== klass;
-	          }).join(' ');
+	          var nodeClasses = node.className.split(' ');
+	          var klasses = klass.split(' ');
+	          klasses.forEach(function (name, idx) {
+	            var position = nodeClasses.indexOf(name);
+	            if (position !== -1) {
+	              nodeClasses.splice(position, 1);
+	            }
+	          });
+	          node.className = nodeClasses.join(' ');
 	        });
 	        return this;
 	      }
@@ -2505,7 +2510,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	describe('add class method', function() {
-	  return it('should add class to the given node', function() {
+	  it('should add class to the given node', function() {
 	    var div, doAllHaveClass, elms;
 	    div = dom().make('div').addClass('newclass').nodes();
 	    expect(div.className).toBe('newclass');
@@ -2518,6 +2523,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return a && b;
 	    }), true);
 	    return expect(doAllHaveClass).toBe(true);
+	  });
+	  return it('should add class to the existing classes', function() {
+	    var div;
+	    div = dom('div').addClass('init');
+	    div.addClass('else more');
+	    return expect(div.nodes().className).toBe('init else more');
 	  });
 	});
 
@@ -2532,13 +2543,23 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	describe('remove class', function() {
 	  return it('should remove the given class from the list of classes on the element.', function() {
-	    var div;
+	    var div, doAllHaveClass, elms;
 	    div = dom().make('div').addClass('someclass newclass otherlcass');
 	    div.removeClass('newclass');
 	    expect(div.nodes().className).toBe('someclass otherlcass');
 	    div = dom().make('div').addClass('   random   badname   someclass');
 	    div.removeClass('random');
-	    return expect(div.nodes().className).toBe('badname someclass');
+	    expect(div.nodes().className).toBe('badname someclass');
+	    div = dom().make('div').addClass('   first   second   third');
+	    div.removeClass('first second');
+	    expect(div.nodes().className).toBe('third');
+	    elms = dom().get('.rmx').removeClass('rmx').nodes();
+	    doAllHaveClass = elms.map(function(elm) {
+	      return elm.className.search('rmx') !== -1;
+	    }).reduce((function(a, b) {
+	      return a && b;
+	    }), true);
+	    return expect(doAllHaveClass).toBe(false);
 	  });
 	});
 
