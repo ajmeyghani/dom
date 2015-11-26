@@ -1,8 +1,9 @@
 {
-  "name": "DOM",
-  "version": "0.5.0",
+  "name": "domy",
+  "version": "0.9.0",
   "authors": [
-    "st32lth <st32lth@gmail.com>"
+    "st32lth <st32lth@gmail.com>",
+    "Amin Meyghani <st32lth@gmail.com>"
   ],
   "license": "MIT",
   "ignore": [
