@@ -5,6 +5,14 @@
     "st32lth <st32lth@gmail.com>",
     "Amin Meyghani <st32lth@gmail.com>"
   ],
+  "main": [
+    "dist/dom.js"
+  ],
+  "keywords": [
+    "dom",
+    "document object model",
+    "vanila javascript"
+  ],
   "license": "MIT",
   "ignore": [
     "**/.*",
