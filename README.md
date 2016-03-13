@@ -1,4 +1,4 @@
-# DOM ![image](https://travis-ci.org/st32lth/dom.svg?branch=master)
+# DOM ![image](https://travis-ci.org/aminmeyghani/dom.svg?branch=master)
 
 Simple helper for working with the DOM.
 
