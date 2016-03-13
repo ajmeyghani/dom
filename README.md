@@ -1,6 +1,6 @@
 # DOM ![image](https://travis-ci.org/st32lth/dom.svg?branch=master)
 
-Simple helper for working with the DOM
+Simple helper for working with the DOM.
 
 ## Browser Compatibility
 
