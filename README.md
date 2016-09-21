@@ -109,13 +109,15 @@ window.dom = f.compose(dom, plugin);
 
 ## Development
 
-Install node
+- Install node
 
-`node server`
+- Run `npm i && bower i` to install the dependencies.
 
-`npm run dev -s`
+- Run `npm run dev -s` to start webpack to watch your files.
 
-`npm run tdd -s`
+- Then run `npm run tdd -s` to watch the files and run the tests.
+
+- If you want to run the tests in CI mode, just `npm test`
 
 ## Build
 
