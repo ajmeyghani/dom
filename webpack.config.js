@@ -4,22 +4,21 @@ var env = process.env.NODE_ENV;
 
 module.exports = {
   entry: {
-    dom: resolve('./src/main.js'),
-    test: resolve('./specs.js')
+    dom: resolve('./src/main.js')
   },
   output: {
-    filename:  env === 'production' ? '[name].min.js' : '[name].js',
+    filename: env === 'production' ? '[name].min.js' : '[name].js',
     path: resolve('./dist'),
     libraryTarget: 'umd',
     library: '[name]'
   },
   module: {
     loaders: [
-      { test: /\.js$/, loader: 'babel' },
-      { test: /\.coffee$/, loader: 'coffee' }
+      {test: /\.js$/, loader: 'babel'},
+      {test: /\.coffee$/, loader: 'coffee'}
     ]
   },
   plugins: [
-    new webpack.DefinePlugin({ IS_DEV: process.env.NODE_ENV === undefined })
+    new webpack.DefinePlugin({IS_DEV: process.env.NODE_ENV === undefined})
   ]
 };

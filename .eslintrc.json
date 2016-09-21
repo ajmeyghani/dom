@@ -1,0 +1,10 @@
+{
+    "extends": "google",
+    "installedESLint": true,
+    "globals": {
+        "IS_DEV": true,
+        "window": true,
+        "document": true,
+        "dom": true
+    }
+}
