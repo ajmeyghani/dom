@@ -1,6 +1,3 @@
-dom = require('../src/dom')
-window.dom = dom
-
 describe 'Constructor', ->
   it 'should create dom element(s)', ->
     body = dom('body').nodes()

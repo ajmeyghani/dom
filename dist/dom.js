@@ -56,29 +56,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var ƒ = __webpack_require__(1);
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 
-	var _require = __webpack_require__(2);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var is = _require.is;
-	var slice = _require.slice;
+	var _dom = __webpack_require__(1);
+
+	var _dom2 = _interopRequireDefault(_dom);
 
 	if (true) {
-	  var hello = ƒ().make('div').inner('<h1>hello world </h1>').nodes();
+	  document.addEventListener('DOMContentLoaded', function () {
+	    var hello = (0, _dom2['default'])().make('div').inner('<h1>hello world </h1>').nodes();
 
-	  var body = ƒ().get('body').nodes()[0];
-	  body.appendChild(hello);
-
-	  ƒ().get('#colors').nodes().addEventListener('click', function (e) {
-	    if (is(e.target.type)) {
-	      ƒ().get('.number').nodes().forEach(function (node) {
-	        node.style.color = e.target.getAttribute('data-color');
-	      });
-	    }
+	    var body = (0, _dom2['default'])().get('body').nodes()[0];
+	    body.appendChild(hello);
 	  });
 	}
 
-	module.exports = ƒ;
+	exports['default'] = _dom2['default'];
+	module.exports = exports['default'];
 
 /***/ },
 /* 1 */
@@ -90,14 +88,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _require = __webpack_require__(2);
 
-	var is = _require.is;
-	var isArray = _require.isArray;
+	var isDefined = _require.isDefined;
 
 	var dom = f({
-	  init: function init(self) {
-	    var arg = self.args[0];
-	    var instance = self.instance;
-	  },
+	  init: function init(self) {},
 	  refs: {
 	    domNodes: []
 	  },
@@ -112,15 +106,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 
 	var domFactory = function domFactory(arg) {
-	  if (is(arg)) {
+	  if (isDefined(arg)) {
 	    if (arg.nodeName) {
 	      var d = dom();
 	      d.setNodes(arg);
 	      return d;
-	    } else if (isArray(arg)) {
+	    } else if (Array.isArray(arg)) {
 	      var nodes = arg;
 	      return nodes.map(function (n) {
-	        var d = dom();n.nodeName ? d.setNodes(n) : d.make(n);return d;
+	        var d = dom();
+	        if (n.nodeName) {
+	          d.setNodes(n);
+	        } else {
+	          d.make(n);
+	        }
+	        return d;
 	      });
 	    } else if (typeof arg === 'string') {
 	      return dom().make(arg);
@@ -140,49 +140,57 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 2 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 	var slice = Array.prototype.slice;
-	var isArray = function isArray(arg) {
-	  return Object.prototype.toString.call(arg) === "[object Array]";
+	var isDefined = function isDefined(thing) {
+	  return typeof thing !== 'undefined';
 	};
-	var is = function is(thing) {
-	  return thing !== undefined;
-	};
-	var request = (function () {
-	  var xhr = new XMLHttpRequest();
-	  return function (method, url, callback) {
-	    xhr.onreadystatechange = function () {
-	      if (xhr.readyState === 4) {
-	        callback(xhr.responseText);
-	      }
-	    };
-	    xhr.open(method, url);
-	    xhr.send();
-	  };
-	})();
 
-	module.exports = { slice: slice, is: is, request: request, isArray: isArray };
+	exports['default'] = { slice: slice, isDefined: isDefined };
+	module.exports = exports['default'];
 
 /***/ },
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	'use strict';
 
 	var f = window.stampit;
-
-	var _require = __webpack_require__(2);
-
-	var slice = _require.slice;
-
 	module.exports = function (plugin) {
 	  var Query = f({
 	    methods: {
 	      get: function get(selector) {
-	        var idOrClass = /^#|^\./;
-	        var target = selector.replace(idOrClass, '');
-	        this.domNodes = idOrClass.test(selector) ? /^#/.test(selector) ? document.getElementById(target) : slice.call(document.getElementsByClassName(target)) : document.getElementsByTagName(selector);
+	        var isIdOrClass = /^#|^\./;
+	        var targetDomNode = selector.replace(isIdOrClass, '');
+
+	        var possibleDomFns = [{
+	          name: 'byId',
+	          pattern: /^#/,
+	          fn: document.getElementById
+	        }, {
+	          name: 'byClass',
+	          pattern: /^\./,
+	          fn: document.getElementsByClassName
+	        }, {
+	          name: 'byTag',
+	          pattern: /^[^#\.]/,
+	          fn: document.getElementsByTagName
+	        }];
+
+	        var isSelectorMatchDomFn = function isSelectorMatchDomFn(selector) {
+	          return function (possibleDomFn) {
+	            return possibleDomFn.pattern.test(selector);
+	          };
+	        };
+
+	        var matchedNodes = possibleDomFns.filter(isSelectorMatchDomFn(selector))[0].fn.call(document, targetDomNode);
+
+	        this.domNodes = matchedNodes && matchedNodes.length ? Array.from(matchedNodes) : matchedNodes;
+
 	        return this;
 	      },
 	      hasClass: function hasClass(klass) {
@@ -190,7 +198,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (el.length) {
 	          throw new Error('Can only check for a single node.');
 	        } else {
-	          return el.className.search(klass) !== -1;
+	          return el.className.indexOf(klass) !== -1;
 	        }
 	      },
 	      parent: function parent() {
@@ -207,9 +215,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
 	var f = window.stampit;
 
-	module.exports = function (plugin) {
+	exports['default'] = function (plugin) {
 	  var Set = f({
 	    methods: {
 	      make: function make(node) {
@@ -231,7 +242,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        nodes.forEach(function (node) {
 	          var initialClasses = node.className.split(' ');
 	          node.className = initialClasses.concat(klass.split(/[ ]+/)).filter(function (className) {
-	            return className !== "";
+	            return className !== '';
 	          }).join(' ');
 	        });
 	        return this;
@@ -241,9 +252,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        nodes.forEach(function (node) {
 	          var nodeClasses = node.className.split(' ');
 	          var klasses = klass.split(' ');
-	          klasses.forEach(function (name, idx) {
+	          klasses.forEach(function (name) {
 	            var position = nodeClasses.indexOf(name);
-	            if (position !== -1) {
+	            if (~position) {
 	              nodeClasses.splice(position, 1);
 	            }
 	          });
@@ -256,6 +267,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	  return f.compose(plugin, Set);
 	};
+
+	module.exports = exports['default'];
 
 /***/ }
 /******/ ])

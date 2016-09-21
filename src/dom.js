@@ -1,10 +1,8 @@
-var f = window.stampit;
-var {is, isArray} = require('./utils');
-var dom = f({
-  init(self) {
-    var arg = self.args[0];
-    var instance = self.instance;
-  },
+const f = window.stampit;
+const {isDefined} = require('./utils');
+
+let dom = f({
+  init(self) {},
   refs: {
     domNodes: []
   },
@@ -18,15 +16,23 @@ var dom = f({
   }
 });
 
-var domFactory = function (arg) {
-  if (is(arg)) {
+const domFactory = function(arg) {
+  if (isDefined(arg)) {
     if (arg.nodeName) {
-      var d = dom();
+      const d = dom();
       d.setNodes(arg);
       return d;
-    } else if (isArray(arg)) {
-      var nodes = arg;
-      return nodes.map( n => { var d = dom(); n.nodeName ? d.setNodes(n) : d.make(n); return d; } );
+    } else if (Array.isArray(arg)) {
+      const nodes = arg;
+      return nodes.map(n => {
+        const d = dom();
+        if (n.nodeName) {
+          d.setNodes(n);
+        } else {
+          d.make(n);
+        }
+        return d;
+      });
     } else if (typeof arg === 'string') {
       return dom().make(arg);
     } else {

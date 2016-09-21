@@ -1,21 +1,14 @@
-var ƒ = require('./dom');
-var {is, slice} = require('./utils');
+import dom from './dom';
 
 if (IS_DEV) {
-  var hello = ƒ().make('div')
-                 .inner('<h1>hello world </h1>')
-                 .nodes();
+  document.addEventListener('DOMContentLoaded', () => {
+    const hello = dom().make('div')
+      .inner('<h1>hello world </h1>')
+      .nodes();
 
-  var body = ƒ().get('body').nodes()[0];
-  body.appendChild(hello);
-
-  ƒ().get('#colors').nodes().addEventListener('click', function (e) {
-    if (is(e.target.type)) {
-      ƒ().get('.number').nodes().forEach(function (node) {
-        node.style.color = e.target.getAttribute('data-color');
-      });
-    }
+    const body = dom().get('body').nodes()[0];
+    body.appendChild(hello);
   });
 }
 
-module.exports = ƒ;
+export default dom;
