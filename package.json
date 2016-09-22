@@ -9,7 +9,7 @@
     "test": "node_modules/testem/testem.js ci -P 5",
     "dev": "npm run webpack -- -w",
     "webpack": "node_modules/webpack/bin/webpack.js",
-    "build": "rm dist/dom* dist/test* && npm run webpack && NODE_ENV=production npm run webpack -- -p"
+    "build": "rm -rf dist/dom* dist/test* && npm run webpack && NODE_ENV=production npm run webpack -- -p"
   },
   "repository": {
     "type": "git",
