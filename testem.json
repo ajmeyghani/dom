@@ -7,7 +7,6 @@
   ],
   "before_tests": "coffee -c test/*.coffee",
   "serve_files": [
-
   ],
   "launch_in_dev": [
     "chrome"
